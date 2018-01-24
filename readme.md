@@ -24,5 +24,7 @@
 3. Navigate to this folder and run `npm test`.
 
 #### Deployed Link
+https://agile-chamber-36890.herokuapp.com/
 
 #### Framework of choice
+React
