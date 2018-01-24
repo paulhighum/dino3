@@ -1,21 +1,58 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+import "./App.css"
+import Header from "./header"
+import GetJobDetails from "./job-details"
+import Form from "./imput-form"
+import Preview from "./preview"
+import Footer from "./footer"
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: [],
+      message: "",
+      text: ""
+    }
+  }
+
+  componentDidMount() {
+    fetch("./listing.json")
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ data: response })
+      })
+  }
+
+  handleClick = event => {
+    event.preventDefault()
+    event.target.reset()
+    this.setState({message: "Your application was submitted!"})
+  }
+
+  previewToggle = event => {
+    event.preventDefault()
+    event.target.parentNode.childNodes[1].classList.toggle("hidden")
+  }
+
+  grabText = event => {
+    event.preventDefault()
+    this.setState({text: event.target.value})
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Header />
+        <main>
+          <GetJobDetails details={this.state.data} />
+          <Form handleClick={this.handleClick} message={this.state.message} grabText={this.grabText}/>
+          <Preview previewToggle={this.previewToggle} text={this.state.text}/>
+        </main>
+        <Footer />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
